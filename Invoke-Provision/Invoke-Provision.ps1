@@ -351,15 +351,15 @@ function Add-Package {
 function Show-WarningShots {
     [cmdletbinding()]
     param (
-        [string]$title = 'Windows 10 Imaging USB'
+        [string]$title = 'Windows 11 Imaging USB'
     )
     Write-Host "================ $title ================" -ForegroundColor Yellow
 
     Write-Host "1: Exit" -ForegroundColor Green
     Write-Host "2: Wipe USB" -ForegroundColor Green
-    Write-Host "3: Install Windows 10 and KEEP USB " -ForegroundColor Green -NoNewline
+    Write-Host "3: Install Windows 11 and KEEP USB " -ForegroundColor Green -NoNewline
     Write-Host "## !!! Destructive !!! ##" -ForegroundColor Red
-    Write-Host "4: Install Windows 10 and DELETE USB " -ForegroundColor Green -NoNewline
+    Write-Host "4: Install Windows 11 and DELETE USB " -ForegroundColor Green -NoNewline
     Write-Host "## !!! Destructive !!! ##" -ForegroundColor Red
 
     $userInput = Read-Host "Please make a selection.."
@@ -419,7 +419,7 @@ try {
     $userChoice = $null
     while ($userChoice -notin 1, 2, 3, 4) {
         Clear-Host
-        $welcomeScreen = "IF9fICBfXyAgICBfXyAgX19fX19fICBfX19fX18gIF9fX19fXwovXCBcL1wgIi0uLyAgXC9cICBfXyBcL1wgIF9fX1wvXCAgX19fXApcIFwgXCBcIFwtLi9cIFwgXCAgX18gXCBcIFxfXyBcIFwgIF9fXAogXCBcX1wgXF9cIFwgXF9cIFxfXCBcX1wgXF9fX19fXCBcX19fX19cCiAgXC9fL1wvXy8gIFwvXy9cL18vXC9fL1wvX19fX18vXC9fX19fXy8KIF9fX19fICAgX19fX19fICBfX19fX18gIF9fICAgICAgX19fX19fICBfXyAgX18KL1wgIF9fLS4vXCAgX19fXC9cICA9PSBcL1wgXCAgICAvXCAgX18gXC9cIFxfXCBcClwgXCBcL1wgXCBcICBfX1xcIFwgIF8tL1wgXCBcX19fXCBcIFwvXCBcIFxfX19fIFwKIFwgXF9fX18tXCBcX19fX19cIFxfXCAgIFwgXF9fX19fXCBcX19fX19cL1xfX19fX1wKICBcL19fX18vIFwvX19fX18vXC9fLyAgICBcL19fX19fL1wvX19fX18vXC9fX19fXy8KICAgICAgIF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCiAgICAgICBXaW5kb3dzIDEwIERldmljZSBQcm92aXNpb25pbmcgVG9vbAogICAgICAgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKio="
+        $welcomeScreen = "CuKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhArilojilojilojilojilojilpHilojiloDiloTiloTiloDilojilpHiloTiloTiloDilojilpHiloTiloTiloTilojilpHiloTiloTilojilojilojilojiloTilpHiloTilojilojilojilojilojilpHiloTiloTiloTilpHilojilojilogK4paI4paI4paI4paI4paI4paR4paI4paR4paI4paI4paR4paI4paR4paA4paA4paE4paI4paR4paI4paE4paA4paI4paR4paE4paE4paI4paA4paA4paI4paI4paR4paI4paI4paA4paA4paI4paI4paR4paI4paI4paI4paR4paI4paA4paACuKWiOKWiOKWkeKWgOKWgOKWkeKWiOKWiOKWhOKWhOKWiOKWiOKWhOKWiOKWhOKWhOKWiOKWhOKWhOKWhOKWhOKWiOKWhOKWhOKWhOKWiOKWhOKWhOKWiOKWgOKWkeKWgOKWiOKWhOKWhOKWiOKWiOKWkeKWgOKWgOKWgOKWkeKWiOKWhOKWhAriloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloAKCioqKioqKioqKioqKioqKioqKldpbmRvd3MgMTEgUHJvdmlzaW9uaW5nIFRvb2wqKioqKioqKioqKioqKioqKioqKioqKioqKioqKio="
         Write-Host $([system.text.encoding]::UTF8.GetString([system.convert]::FromBase64String($welcomeScreen)))
         Start-Sleep -Seconds 2
         $userChoice = Show-WarningShots
