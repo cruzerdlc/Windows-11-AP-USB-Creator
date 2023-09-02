@@ -1,2 +1,2 @@
 {{NewVersion}}
-  - "diskNum" parameter will now correctly (and silently) pass the selected disk number with no user interaction required.
+  - Rebuilt to support windows 11
