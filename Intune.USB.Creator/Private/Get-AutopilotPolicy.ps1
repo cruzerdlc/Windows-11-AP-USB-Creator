@@ -1,5 +1,7 @@
 #requires -Modules @{ ModuleName="WindowsAutoPilotIntune"; ModuleVersion="4.3" }
 #requires -Modules @{ ModuleName="Microsoft.Graph.Intune"; ModuleVersion="6.1907.1.0"}
+Connect-MgGraph -Scopes "Device.ReadWrite.All", "DeviceManagementManagedDevices.ReadWrite.All", "DeviceManagementServiceConfig.ReadWrite.All", "Domain.ReadWrite.All", "Group.ReadWrite.All", "GroupMember.ReadWrite.All", "User.Read"
+           
 function Get-AutopilotPolicy {
     [cmdletbinding()]
     param (
@@ -10,7 +12,8 @@ function Get-AutopilotPolicy {
         if (!(Test-Path "$FileDestination\AutopilotConfigurationFile.json" -ErrorAction SilentlyContinue)) {
             $modules = @(
                 "WindowsAutoPilotIntune",
-                "Microsoft.Graph.Intune"
+                "Microsoft.Graph.Intune",
+				"AzureAD"
             )
             if ($PSVersionTable.PSVersion.Major -eq 7) {
                 $modules | ForEach-Object {
@@ -23,9 +26,10 @@ function Get-AutopilotPolicy {
                 }
             }
             #region Connect to Intune
-            Connect-MSGraph | Out-Null
-            #endregion Connect to Intune
-            #region Get policies
+			Connect-MgGraph -Scopes "Device.ReadWrite.All", "DeviceManagementManagedDevices.ReadWrite.All", "DeviceManagementServiceConfig.ReadWrite.All", "Domain.ReadWrite.All", "Group.ReadWrite.All", "GroupMember.ReadWrite.All", "User.Read"
+           
+
+            
             $apPolicies = Get-AutopilotProfile
             if (!($apPolicies)) {
                 Write-Warning "No Autopilot policies found.."
@@ -33,7 +37,9 @@ function Get-AutopilotPolicy {
             else {
                 if ($apPolicies.count -gt 1) {
                     Write-Host "Multiple Autopilot policies found - select the correct one.." -ForegroundColor Cyan
-                    $selectedPolicy = $apPolicies | Select-Object displayName | Out-GridView -passthru
+                    $selectedPolicy = $apPolicies | Select-Object displayName | 
+                    Out-GridView -PassThru |
+                    ForEach-Object{Get-Content $_.displayName | Set-Clipboard -Append}
                     $apPol = $apPolicies | Where-Object {$_.displayName -eq $selectedPolicy.displayName}
                 }
                 else {
