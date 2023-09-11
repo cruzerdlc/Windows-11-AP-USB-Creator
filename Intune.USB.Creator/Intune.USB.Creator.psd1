@@ -5,6 +5,11 @@
 #
 # Generated on: 12/14/2021
 #
+# Modified by: Jorge.I.O.
+#
+# Modified on" 09/2023
+# Converted to create windows 11 usb key.
+#
 
 @{
 
@@ -102,7 +107,7 @@ PrivateData = @{
         # LicenseUri = ''
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/tabs-not-spaces/Intune.USB.Creator'
+        ProjectUri = 'https://github.com/cruzerdlc/Windows-11-AP-USB-Creator/'
 
         # A URL to an icon representing this module.
         # IconUri = ''
