@@ -9,9 +9,9 @@ function Publish-ImageToUSB {
         [parameter(ParameterSetName = "Default", Mandatory = $true)]
         [string]$windowsIsoPath,
 
-        [parameter(ParameterSetName = "Build", Mandatory = $false)]
-        [parameter(ParameterSetName = "Default", Mandatory = $false)]
-        [switch]$getAutoPilotCfg,
+        [parameter(ParameterSetName = "Build", Mandatory = $true)]
+        [parameter(ParameterSetName = "Default", Mandatory = $true)]
+        [string]$AutoPilotPath,
 
         [parameter(ParameterSetName = "Build", Mandatory = $true)]
         [string]$imageIndex,
@@ -24,14 +24,14 @@ function Publish-ImageToUSB {
         #region start diagnostic // show welcome
         $errorMsg = $null
         $sw = [System.Diagnostics.Stopwatch]::StartNew()
-        $welcomeScreen = "CuKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhOKWhArilojilojilojilojilojilpHilojiloDiloTiloTiloDilojilpHiloTiloTiloDilojilpHiloTiloTiloTilojilpHiloTiloTilojilojilojilojiloTilpHiloTilojilojilojilojilojilpHiloTiloTiloTilpHilojilojilogK4paI4paI4paI4paI4paI4paR4paI4paR4paI4paI4paR4paI4paR4paA4paA4paE4paI4paR4paI4paE4paA4paI4paR4paE4paE4paI4paA4paA4paI4paI4paR4paI4paI4paA4paA4paI4paI4paR4paI4paI4paI4paR4paI4paA4paACuKWiOKWiOKWkeKWgOKWgOKWkeKWiOKWiOKWhOKWhOKWiOKWiOKWhOKWiOKWhOKWhOKWiOKWhOKWhOKWhOKWhOKWiOKWhOKWhOKWhOKWiOKWhOKWhOKWiOKWgOKWkeKWgOKWiOKWhOKWhOKWiOKWiOKWkeKWgOKWgOKWgOKWkeKWiOKWhOKWhAriloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloDiloAKCioqKioqKioqKioqKioqKioqKldpbmRvd3MgMTEgUHJvdmlzaW9uaW5nIFRvb2wqKioqKioqKioqKioqKioqKioqKioqKioqKioqKio="
+        $welcomeScreen = "ICAgIF9fICBfXyAgICBfXyAgX19fX19fICBfX19fX18gIF9fX19fXw0KICAgL1wgXC9cICItLi8gIFwvXCAgX18gXC9cICBfX19cL1wgIF9fX1wNCiAgIFwgXCBcIFwgXC0uL1wgXCBcICBfXyBcIFwgXF9fIFwgXCAgX19cDQogICAgXCBcX1wgXF9cIFwgXF9cIFxfXCBcX1wgXF9fX19fXCBcX19fX19cDQogICAgIFwvXy9cL18vICBcL18vXC9fL1wvXy9cL19fX19fL1wvX19fX18vDQogX19fX19fICBfXyAgX18gIF9fICBfXyAgICAgIF9fX19fICAgX19fX19fICBfX19fX18NCi9cICA9PSBcL1wgXC9cIFwvXCBcL1wgXCAgICAvXCAgX18tLi9cICBfX19cL1wgID09IFwNClwgXCAgX188XCBcIFxfXCBcIFwgXCBcIFxfX19cIFwgXC9cIFwgXCAgX19cXCBcICBfXzwNCiBcIFxfX19fX1wgXF9fX19fXCBcX1wgXF9fX19fXCBcX19fXy1cIFxfX19fX1wgXF9cIFxfXA0KICBcL19fX19fL1wvX19fX18vXC9fL1wvX19fX18vXC9fX19fLyBcL19fX19fL1wvXy8gL18vDQogICAgICAgICBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KICAgICAgICAgV2luZG93cyAxMSBEZXZpY2UgUHJvdmlzaW9uaW5nIFRvb2wNCiAgICAgICAgICoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
         Write-Host $([system.text.encoding]::UTF8.GetString([system.convert]::FromBase64String($welcomeScreen)))
         if (!(Test-Admin)) {
             throw "Exiting -- need admin right to execute"
         }
         #endregion
         #region set usb class
-        Write-Host "`nSetting up configuration paths.." -ForegroundColor Yellow
+        Write-Host "`nSetting up configuration paths..p" -ForegroundColor Yellow
         $usb = [ImageUSBClass]::new()
         #endregion
         #region get winPE / unpack to temp
@@ -59,12 +59,6 @@ function Publish-ImageToUSB {
             Get-ImageIndexFromWim -wimPath $usb.WIMFilePath -destination "$($usb.downloadPath)\$($usb.dirName2)"
         }
         #endregion
-        #region get Autopilot config from azure
-        if ($getAutopilotCfg) {
-            Write-Host "`nGrabbing Autopilot config file from Azure.." -ForegroundColor Yellow
-            Get-AutopilotPolicy -fileDestination $usb.downloadPath
-        }
-        #endregion
         #region choose and partition USB
         Write-Host "`nConfiguring USB.." -ForegroundColor Yellow
         if ($PsCmdlet.ParameterSetName -eq "Build") {
@@ -87,9 +81,9 @@ function Publish-ImageToUSB {
         }
         #endregion
         #region write Autopilot to USB
-        if ($getAutopilotCfg) {
-            Write-Host "`nWriting Autopilot to USB.." -ForegroundColor Yellow -NoNewline
-            Write-ToUSB -Path "$($usb.downloadPath)\AutopilotConfigurationFile.json" -Destination "$($usb.drive):\scripts\"
+        if ($AutoPilotCfgPath) {
+            Write-Host "`nWriting Autopilot config to USB.." -ForegroundColor Yellow -NoNewline
+            Write-ToUSB -Path "$($usb.$AutoPilotCfgPath)" -Destination "$($usb.drive):\" -expand
         }
         #endregion
         #region Create drivers folder
