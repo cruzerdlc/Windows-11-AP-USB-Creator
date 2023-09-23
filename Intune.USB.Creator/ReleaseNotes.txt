@@ -1,2 +1,0 @@
-{{NewVersion}}
-  - Rebuilt to support windows 11
